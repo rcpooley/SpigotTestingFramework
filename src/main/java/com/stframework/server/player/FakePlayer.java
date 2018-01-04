@@ -1,9 +1,9 @@
 package com.stframework.server.player;
 
-import com.stframework.server.network.NetworkManager;
-import com.stframework.server.network.packet.PacketChatMessage;
-import com.stframework.server.network.packet.PacketHandshake;
-import com.stframework.server.network.packet.PacketLoginStart;
+import net.minecraft.network.EnumConnectionState;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.handshake.client.C00Handshake;
+import net.minecraft.network.login.client.CPacketLoginStart;
 
 import java.net.*;
 
@@ -26,13 +26,13 @@ public class FakePlayer {
 
     public void connect(String address, int port) {
         try {
-            networkManager = NetworkManager.connect(InetAddress.getByName(address), port);
+            networkManager = NetworkManager.createNetworkManagerAndConnect(InetAddress.getByName(address), port, true);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
 
-        networkManager.sendPacket(new PacketHandshake(address, port));
-        networkManager.sendPacket(new PacketLoginStart(name));
+        networkManager.sendPacket(new C00Handshake(address, port, EnumConnectionState.LOGIN));
+        networkManager.sendPacket(new CPacketLoginStart(name));
     }
 
     public void disconnect() {
