@@ -1,6 +1,7 @@
 package com.stframework.server;
 
 import com.stframework.core.Util;
+import com.stframework.server.player.FakePlayer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -81,7 +82,8 @@ public class ServerWrap {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 String line;
                 while((line = reader.readLine()) != null) {
-                    write(line);
+                    //write(line);
+                    new FakePlayer("bob");
                 }
             } catch (IOException e) {
                 e.printStackTrace();

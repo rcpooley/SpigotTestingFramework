@@ -3,24 +3,10 @@ package com.stframework;
 import com.stframework.client.ClientPlayer;
 import com.stframework.client.CommandClient;
 import com.stframework.core.Util;
-import com.stframework.core.command.packet.*;
-import com.stframework.core.command.CommandSocket;
 import com.stframework.server.CoreServer;
-import com.stframework.server.player.FakePlayer;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFire;
-import net.minecraft.client.Minecraft;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityList;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionHelper;
-import net.minecraft.potion.PotionType;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.network.EnumConnectionState;
+import net.minecraft.network.EnumPacketDirection;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +15,13 @@ public class Main {
     public static final int DEFAULT_PORT = 42912;
 
     public static void main(String[] args) {
-        Minecraft.getSystemTime();
+        try {
+            Object obj = EnumConnectionState.PLAY.getPacket(EnumPacketDirection.CLIENTBOUND, 24);
+            System.out.println(obj);
+            //return;
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
         Map<String, String> realArgs = new HashMap<>();
         realArgs.put("-p", DEFAULT_PORT + "");
 

@@ -1,6 +1,9 @@
 package com.stframework.server.player;
 
 import com.stframework.server.network.NetworkManager;
+import com.stframework.server.network.packet.PacketChatMessage;
+import com.stframework.server.network.packet.PacketHandshake;
+import com.stframework.server.network.packet.PacketLoginStart;
 
 import java.net.*;
 
@@ -9,9 +12,11 @@ public class FakePlayer {
     public static String HOST = "localhost";
     public static int PORT = 25565;
 
+    private String name;
     private NetworkManager networkManager;
 
     public FakePlayer(String name) {
+        this.name = name;
         connect(HOST, PORT);
     }
 
@@ -26,22 +31,15 @@ public class FakePlayer {
             e.printStackTrace();
         }
 
-        networkManager.sendPacket(new C00Handshake(address, port, EnumConnectionState.LOGIN));
-        networkManager.sendPacket(new CPacketLoginStart(mc.getSession().getProfile()));
+        networkManager.sendPacket(new PacketHandshake(address, port));
+        networkManager.sendPacket(new PacketLoginStart(name));
     }
 
     public void disconnect() {
-        networkManager.closeChannel(new TextComponentString("Quitting"));
+        networkManager.closeChannel();
     }
 
     public void sendMessage(String message) {
-        networkManager.sendPacket(new CPacketChatMessage(message));
-    }
-
-    /**
-     * Returns whether a string is either null or empty.
-     */
-    private static boolean isNullOrEmpty(String str) {
-        return str != null && !str.isEmpty();
+        networkManager.sendPacket(new PacketChatMessage(message));
     }
 }

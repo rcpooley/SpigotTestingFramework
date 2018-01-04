@@ -13,10 +13,14 @@ public class Decoder extends ByteToMessageDecoder {
         if (byteBuf.readableBytes() != 0) {
             PacketBuffer packetbuffer = new PacketBuffer(byteBuf);
             int packetID = packetbuffer.readVarInt();
-            Packet packet = Packet.getPacket(packetID);
+
+            int state = channelHandlerContext.channel().attr(NetworkManager.STATE_ATTRIBUTE_KEY).get();
+
+            Packet packet = PacketUtil.getPacket(state, packetID);
 
             if (packet == null) {
-                throw new IOException("Bad packet id " + packetID);
+                System.out.println("Bad packet id " + packetID);
+                return;
             } else {
                 packet.readPacketData(packetbuffer);
 

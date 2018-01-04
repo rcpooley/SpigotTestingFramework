@@ -17,7 +17,7 @@ public class PlayerHandler {
     public Session createPlayer(String name) {
         FakePlayer fp = new FakePlayer(name);
         players.put(name, fp);
-        return fp.getSession();
+        return null;
     }
 
     public FakePlayer getPlayer(String name) {
