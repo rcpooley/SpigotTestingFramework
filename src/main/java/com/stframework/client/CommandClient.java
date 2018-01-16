@@ -4,10 +4,7 @@ import com.stframework.Main;
 import com.stframework.core.Util;
 import com.stframework.core.command.CommandSocket;
 import com.stframework.core.command.PacketHandler;
-import com.stframework.core.command.packet.CommandPacket;
-import com.stframework.core.command.packet.PacketNewPlayer;
-import com.stframework.core.command.packet.PacketServerCommand;
-import com.stframework.core.command.packet.PacketSingleAction;
+import com.stframework.core.command.packet.*;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -76,6 +73,15 @@ public class CommandClient {
 
     public void executeCommand(String cmd) {
         socket.sendPacket(new PacketServerCommand(cmd));
+    }
+
+    public void watchOutput(String output) {
+        socket.sendPacket(new PacketOutputWatch(output));
+    }
+
+    public boolean expectOutput(String output) {
+        PacketOutputWatch resp = (PacketOutputWatch) Util.assertClass(waitForPacket(), PacketOutputWatch.class);
+        return resp != null && resp.getOutput().equals(output);
     }
 
     public void disconnect() {

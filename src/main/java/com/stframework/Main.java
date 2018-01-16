@@ -4,8 +4,6 @@ import com.stframework.client.ClientPlayer;
 import com.stframework.client.CommandClient;
 import com.stframework.core.Util;
 import com.stframework.server.CoreServer;
-import net.minecraft.network.EnumConnectionState;
-import net.minecraft.network.EnumPacketDirection;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,13 +13,6 @@ public class Main {
     public static final int DEFAULT_PORT = 42912;
 
     public static void main(String[] args) {
-        try {
-            Object obj = EnumConnectionState.PLAY.getPacket(EnumPacketDirection.CLIENTBOUND, 24);
-            System.out.println(obj);
-            //return;
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
         Map<String, String> realArgs = new HashMap<>();
         realArgs.put("-p", DEFAULT_PORT + "");
 
@@ -55,8 +46,10 @@ public class Main {
             CommandClient client = new CommandClient();
             ClientPlayer player = client.createPlayer("bobby");
             Util.sleep(500);
-            player.sendMessage("hey there!");
-            Util.sleep(1000);
+            String msg = "hey there!";
+            client.watchOutput(msg);
+            player.sendMessage(msg);
+            System.out.println("Message success: " + client.expectOutput(msg));
             player.disconnect();
             client.disconnect();
             return;

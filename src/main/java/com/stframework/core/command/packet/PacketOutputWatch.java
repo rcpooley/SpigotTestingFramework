@@ -3,11 +3,21 @@ package com.stframework.core.command.packet;
 public class PacketOutputWatch extends CommandPacket {
 
     public static PacketOutputWatch parse(String str) {
-        return null;
+        return new PacketOutputWatch(str);
+    }
+
+    private String output;
+
+    public PacketOutputWatch(String output) {
+        this.output = output;
     }
 
     @Override
     public String encode() {
-        return null;
+        return output;
+    }
+
+    public String getOutput() {
+        return output;
     }
 }

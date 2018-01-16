@@ -13,6 +13,7 @@ public abstract class CommandPacket {
     static {
         typeMap = new HashMap<>();
         typeMap.put("newPlayer", PacketNewPlayer.class);
+        typeMap.put("outputWatch", PacketOutputWatch.class);
         typeMap.put("playerAction", PacketPlayerAction.class);
         typeMap.put("serverCommand", PacketServerCommand.class);
         typeMap.put("singleAction", PacketSingleAction.class);

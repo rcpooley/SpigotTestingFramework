@@ -38,27 +38,6 @@ import java.util.UUID;
 
 public class FakePlayer {
 
-    static {
-        try {
-            Field field = Bootstrap.class.getDeclaredField("alreadyRegistered");
-            field.setAccessible(true);
-            field.set(null, true);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        SoundEvent.registerSounds();
-        Block.registerBlocks();
-        BlockFire.init();
-        Potion.registerPotions();
-        Enchantment.registerEnchantments();
-        Item.registerItems();
-        PotionType.registerPotionTypes();
-        PotionHelper.init();
-        EntityList.init();
-        Biome.registerBiomes();
-    }
-
     private static class InitInfo {
         public GameConfiguration gameConfiguration;
         public Session session;

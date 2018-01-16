@@ -82,8 +82,7 @@ public class ServerWrap {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 String line;
                 while((line = reader.readLine()) != null) {
-                    //write(line);
-                    new FakePlayer("bob");
+                    write(line);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

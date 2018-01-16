@@ -3,8 +3,10 @@ package com.stframework.core.command;
 import com.stframework.core.Util;
 import com.stframework.core.command.packet.CommandPacket;
 
+import javax.annotation.Nullable;
 import java.io.*;
 import java.net.Socket;
+import java.util.regex.Pattern;
 
 public class CommandSocket {
 
@@ -35,7 +37,9 @@ public class CommandSocket {
         try {
             String line;
             while((line = reader.readLine()) != null) {
-                packetHandler.handlePacket(this, CommandPacket.parse(Util.decode(line)));
+                CommandPacket packet = CommandPacket.parse(Util.decode(line));
+                logPacket(packet, false);
+                packetHandler.handlePacket(this, packet);
             }
         } catch (IOException e) {
             String s = e.getMessage();
@@ -46,7 +50,20 @@ public class CommandSocket {
     }
 
     public void sendPacket(CommandPacket packet) {
+        logPacket(packet, true);
         writer.println(Util.encode(packet.toString()));
+    }
+
+    private void logPacket(@Nullable CommandPacket packet, boolean outgoing) {
+        String build = outgoing ? "Sending packet" : "Received packet";
+        if (packet == null) {
+            System.out.println(build + " null");
+            return;
+        }
+        String[] spl = packet.getClass().getName().split(Pattern.quote("."));
+        String packetName = spl[spl.length - 1];
+        build += " " + packetName + "(" + packet.toString() + ")";
+        System.out.println(build);
     }
 
     public Socket getSocket() {

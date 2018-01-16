@@ -43,6 +43,12 @@ public class ServerPacketHandler implements PacketHandler {
                     fp.sendMessage(pack.getActionArgs()[0]);
                 }
             }
+        } else if (packet instanceof PacketOutputWatch) {
+            PacketOutputWatch pack = (PacketOutputWatch) packet;
+            new Thread(() -> {
+                server.getServerWrap().waitForOutput(pack.getOutput());
+                socket.sendPacket(packet);
+            }).start();
         }
     }
 }
